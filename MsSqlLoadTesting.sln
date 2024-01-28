@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsSqlLoadTesting", "MsSqlLoadTesting\MsSqlLoadTesting.csproj", "{4900DB9C-1EBB-4810-A942-1BA9BDB3316F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsSqlLoadTesting.NetFramework", "MsSqlLoadTesting.NetFramework\MsSqlLoadTesting.NetFramework.csproj", "{00B16729-A96F-49A8-A457-AB62F30764C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4900DB9C-1EBB-4810-A942-1BA9BDB3316F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4900DB9C-1EBB-4810-A942-1BA9BDB3316F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4900DB9C-1EBB-4810-A942-1BA9BDB3316F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4900DB9C-1EBB-4810-A942-1BA9BDB3316F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00B16729-A96F-49A8-A457-AB62F30764C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00B16729-A96F-49A8-A457-AB62F30764C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00B16729-A96F-49A8-A457-AB62F30764C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00B16729-A96F-49A8-A457-AB62F30764C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
