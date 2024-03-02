@@ -15,7 +15,7 @@ WHERE k <= 10000
 
 
 CREATE TABLE [dbo].[test](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[Id] [bigint] NOT NULL,
 	[Name] [nvarchar](50) NOT NULL,
 	[Data] [nvarchar](max) NULL,
 	[Version] [int] NOT NULL DEFAULT (0),
