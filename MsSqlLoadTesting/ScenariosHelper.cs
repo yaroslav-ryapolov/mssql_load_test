@@ -63,7 +63,7 @@ public class ScenariosHelper(MsSqlHelper msSqlHelper, TimeSpan? initDuration = n
                     }
                     catch (Exception ex)
                     {
-                        logger?.LogError(exception: ex, message: "attempt={MaxAttempts}", maxAttempts + 1 - attempts);
+                        logger?.LogError(exception: ex, message: "{Attempts}", maxAttempts + 1 - attempts);
                         attempts--;
                         lastExceptionMessage = ex.Message;
                     }
