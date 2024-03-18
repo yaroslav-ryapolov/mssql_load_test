@@ -6,7 +6,7 @@ namespace MsSqlLoadTesting;
 
 public class ScenariosHelper(MsSqlHelper msSqlHelper, TimeSpan? initDuration = null, ILogger? logger = null)
 {
-    public TimeSpan Duration { get; private set; } = initDuration ?? TimeSpan.FromMinutes(3);
+    private TimeSpan Duration { get; } = initDuration ?? TimeSpan.FromMinutes(3);
 
     public ScenarioProps GetInsertScenario(int copies)
     {
@@ -27,13 +27,13 @@ public class ScenariosHelper(MsSqlHelper msSqlHelper, TimeSpan? initDuration = n
         return this.KeepConstant(result, copies);
     }
 
-    public ScenarioProps GetReadScenario(int copies)
+    public ScenarioProps GetReadScenario(int copies, int maxId)
     {
         var result = Scenario.Create("ms_sql_reads", async context =>
             {
                 try
                 {
-                    await msSqlHelper.JustQueryRow();
+                    await msSqlHelper.JustQueryRow(maxId);
 
                     return Response.Ok(statusCode: "ok");
                 }
@@ -58,7 +58,7 @@ public class ScenariosHelper(MsSqlHelper msSqlHelper, TimeSpan? initDuration = n
                 {
                     try
                     {
-                        id = await msSqlHelper.UpdateRow(idParam: id, maxId: 100);
+                        id = await msSqlHelper.UpdateRow(idParam: id, maxId);
                         return Response.Ok(statusCode: "ok");
                     }
                     catch (Exception ex)

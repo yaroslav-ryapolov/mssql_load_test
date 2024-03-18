@@ -5,14 +5,26 @@ using Microsoft.Extensions.Logging;
 
 namespace MsSqlLoadTesting;
 
-public class MsSqlHelper(bool inMemory, IsolationLevel transactionIsolationLevel = IsolationLevel.ReadCommitted, ILogger? logger = null)
+public class MsSqlHelper(bool inMemory, IsolationLevel transactionIsolationLevel = IsolationLevel.ReadCommitted, string? dbHost = null, string? dbName = null, string? dbUser = null, string? dbPassword = null, ILogger? logger = null)
 {
-    private const string ConnectionStringRegular = "Data Source=localhost;Initial Catalog=test_load;User Id=sa;Password=TheStrongPassword123;TrustServerCertificate=True;Max Pool Size=15000;";
-    private const string ConnectionStringInMemory = "Data Source=localhost;Initial Catalog=test_load_in_memory;User Id=sa;Password=TheStrongPassword123;TrustServerCertificate=True;Max Pool Size=15000;";
+    private const string ConnectionStringRegular = "Data Source=130.193.51.89;Initial Catalog=test_load;User Id=sa;Password=TheStrongPassword123;TrustServerCertificate=True;Max Pool Size=15000;";
+    private const string ConnectionStringInMemory = "Data Source=130.193.51.89;Initial Catalog=test_load_in_memory;User Id=sa;Password=TheStrongPassword123;TrustServerCertificate=True;Max Pool Size=15000;";
 
     private readonly ThreadLocal<Random> _random = new(() => new Random(Seed: (int)(DateTime.UtcNow.Ticks % int.MaxValue)));
 
-    private string ConnectionString => inMemory ? ConnectionStringInMemory : ConnectionStringRegular;
+    private string ConnectionString
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(dbHost))
+            {
+                return inMemory ? ConnectionStringInMemory : ConnectionStringRegular;
+            }
+
+            return $"Data Source={dbHost};Initial Catalog={dbName};User Id={dbUser};Password={dbPassword};TrustServerCertificate=True;Max Pool Size=15000;";
+        }
+    }
+
     private Random Random => _random.Value!;
 
     public async Task EnsureTable(int rowCount, bool forceReCreate)
