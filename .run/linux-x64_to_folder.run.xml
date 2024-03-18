@@ -1,0 +1,6 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="linux-x64_to_folder" type="DotNetFolderPublish" factoryName="Publish to folder">
+    <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" produce_single_file="true" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/MsSqlLoadTesting/bin/Release/net8.0/linux-x64/publish" target_framework="net8.0" uuid_high="5260445828345710608" uuid_low="-6250402916990766737" />
+    <method v="2" />
+  </configuration>
+</component>
