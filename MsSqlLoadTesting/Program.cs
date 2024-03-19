@@ -9,7 +9,9 @@ const int defaultInitRows = 1_000;
 
 bool isInMemory = false;
 bool forceTableReCreate = false;
-var scenarios = new List<string> ();
+int insertScenarioCopies = 0;
+int updateScenarioCopies = 0;
+int readScenarioCopies = 0;
 int durationInMinutes = 3;
 
 string dbHost = "localhost";
@@ -31,8 +33,16 @@ var p = new OptionSet() {
         d => int.TryParse(d, out durationInMinutes)
     },
     {
-        "s|scenarios=", "one of scenario to run",
-        s => scenarios.Add(s.ToLower())
+        "is|insert-scenario=", "copies of insert scenario to run",
+        @is => int.TryParse(@is, out insertScenarioCopies)
+    },
+    {
+        "us|update-scenario=", "copies of update scenario to run",
+        us => int.TryParse(us, out updateScenarioCopies)
+    },
+    {
+        "rs|read-scenario=", "copies of read scenario to run",
+        rs => int.TryParse(rs, out readScenarioCopies)
     },
     {
         "h|host=", "db host",
@@ -65,7 +75,9 @@ try {
     Console.WriteLine($"in-memory testing: {isInMemory}");
     Console.WriteLine($"force recreation of table: {forceTableReCreate}");
     Console.WriteLine($"durationInMinutes: {durationInMinutes}");
-    Console.WriteLine($"scenarios: {string.Join(",", scenarios)}");
+    Console.WriteLine($"insert scenarios: {insertScenarioCopies}");
+    Console.WriteLine($"update scenarios: {updateScenarioCopies}");
+    Console.WriteLine($"read scenarios: {readScenarioCopies}");
     Console.WriteLine($"db host: {dbHost}");
     Console.WriteLine($"db user: {dbUser}");
     Console.WriteLine($"db password: {dbPassword}");
@@ -86,14 +98,20 @@ var scenariosHelper = new ScenariosHelper(msSqlHelper, initDuration: TimeSpan.Fr
 
 await msSqlHelper.EnsureTable(rowCount: defaultInitRows, forceReCreate: false);
 
-// todo: check names in init section
-var nameToScenario = new Dictionary<string, ScenarioProps>()
+var scenarios = new List<ScenarioProps>();
+if (insertScenarioCopies > 0)
 {
-    { "insert", scenariosHelper.GetInsertScenario(copies: 1_000) },
-    { "update", scenariosHelper.GetUpdateScenario(copies: 1_000, maxId: 100) },
-    { "read", scenariosHelper.GetReadScenario(copies: 5_000, maxId: defaultInitRows) },
-};
+    scenarios.Add(scenariosHelper.GetInsertScenario(insertScenarioCopies));
+}
+if (updateScenarioCopies > 0)
+{
+    scenarios.Add(scenariosHelper.GetUpdateScenario(updateScenarioCopies, maxId: 100));
+}
+if (readScenarioCopies > 0)
+{
+    scenarios.Add(scenariosHelper.GetReadScenario(readScenarioCopies, maxId: defaultInitRows));
+}
 
 NBomberRunner
-    .RegisterScenarios(scenarios.Select(s => nameToScenario[s]).ToArray())
+    .RegisterScenarios(scenarios.ToArray())
     .Run();
